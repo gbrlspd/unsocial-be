@@ -9,10 +9,14 @@ import HTTP_STATUS from 'http-status-codes';
 import { Server } from 'socket.io';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
+import Logger from 'bunyan';
+import applicationRoutes from './routes';
 import 'express-async-errors';
 import { config } from './config';
+import { CustomError, IErrorResponse } from './shared/global/helpers/error-handler';
 
 const SERVER_PORT = 5000;
+const log: Logger = config.createLogger('setupServer');
 
 export class ApplicationServer {
   private app: Application;
@@ -48,9 +52,25 @@ export class ApplicationServer {
     app.use(urlencoded({ extended: true, limit: '50mb' }));
   }
 
-  private routesMiddleware(app: Application): void {}
+  private routesMiddleware(app: Application): void {
+    applicationRoutes(app);
+  }
 
-  private globalErrorHandler(app: Application): void {}
+  private globalErrorHandler(app: Application): void {
+    app.all('*', (req: Request, res: Response) => {
+      res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: `${req.originalUrl} not found`,
+      });
+    });
+
+    app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
+      log.error(error);
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json(error.serializeErrors());
+      }
+      next();
+    });
+  }
 
   private async startServer(app: Application): Promise<void> {
     try {
@@ -59,7 +79,7 @@ export class ApplicationServer {
       this.startHttpServer(httpServer);
       this.socketConnections(socketServer);
     } catch (error) {
-      console.log(error);
+      log.error(error);
     }
   }
 
@@ -81,9 +101,9 @@ export class ApplicationServer {
   private socketConnections(io: Server): void {}
 
   private startHttpServer(httpServer: http.Server): void {
-    console.log(`Server process: ${process.pid}`);
+    log.info(`Server process: ${process.pid}`);
     httpServer.listen(SERVER_PORT, () => {
-      console.log(`Server running on port ${SERVER_PORT}`);
+      log.info(`Server running on port ${SERVER_PORT}`);
     });
   }
 
