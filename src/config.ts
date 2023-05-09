@@ -1,0 +1,33 @@
+import dotenv from 'dotenv';
+
+dotenv.config({});
+
+class Config {
+  public DATABASE_URI: string | undefined;
+  public REDIS_URI: string | undefined;
+  public CLIENT_URL: string | undefined;
+  public JWT_SECRET: string | undefined;
+  public SECRET_KEY_ONE: string | undefined;
+  public SECRET_KEY_TWO: string | undefined;
+  public NODE_ENV: string | undefined;
+
+  constructor() {
+    this.DATABASE_URI = process.env.DATABASE_URI;
+    this.REDIS_URI = process.env.REDIS_URI;
+    this.CLIENT_URL = process.env.CLIENT_URL;
+    this.JWT_SECRET = process.env.JWT_SECRET;
+    this.SECRET_KEY_ONE = process.env.SECRET_KEY_ONE;
+    this.SECRET_KEY_TWO = process.env.SECRET_KEY_TWO;
+    this.NODE_ENV = process.env.NODE_ENV;
+  }
+
+  public validateConfig(): void {
+    for (const [key, value] of Object.entries(this)) {
+      if (value === undefined) {
+        throw new Error(`Configuration ${key} is undefined`);
+      }
+    }
+  }
+}
+
+export const config: Config = new Config();

@@ -6,7 +6,11 @@ import hpp from 'hpp';
 import compression from 'compression';
 import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
+import { Server } from 'socket.io';
+import { createClient } from 'redis';
+import { createAdapter } from '@socket.io/redis-adapter';
 import 'express-async-errors';
+import { config } from './config';
 
 const SERVER_PORT = 5000;
 
@@ -21,16 +25,16 @@ export class ApplicationServer {
     app.use(
       cookieSession({
         name: 'session',
-        keys: ['test1', 'test2'],
+        keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
         maxAge: 12 * 3600000,
-        secure: false,
+        secure: config.NODE_ENV !== 'development',
       })
     );
     app.use(hpp());
     app.use(helmet());
     app.use(
       cors({
-        origin: '*',
+        origin: config.CLIENT_URL,
         credentials: true,
         optionsSuccessStatus: 200,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -51,15 +55,33 @@ export class ApplicationServer {
   private async startServer(app: Application): Promise<void> {
     try {
       const httpServer: http.Server = new http.Server(app);
+      const socketServer: Server = await this.startSocket(httpServer);
       this.startHttpServer(httpServer);
+      this.socketConnections(socketServer);
     } catch (error) {
       console.log(error);
     }
   }
 
-  private startSocket(httpServer: http.Server): void {}
+  private async startSocket(httpServer: http.Server): Promise<Server> {
+    const io: Server = new Server(httpServer, {
+      cors: {
+        origin: config.CLIENT_URL,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      },
+    });
+
+    const pubClient = createClient({ url: config.REDIS_URI });
+    const subClient = pubClient.duplicate();
+    await Promise.all([pubClient.connect(), subClient.connect()]);
+    io.adapter(createAdapter(pubClient, subClient));
+    return io;
+  }
+
+  private socketConnections(io: Server): void {}
 
   private startHttpServer(httpServer: http.Server): void {
+    console.log(`Server process: ${process.pid}`);
     httpServer.listen(SERVER_PORT, () => {
       console.log(`Server running on port ${SERVER_PORT}`);
     });
