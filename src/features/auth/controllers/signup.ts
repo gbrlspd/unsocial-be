@@ -9,6 +9,11 @@ import { authService } from '@services/database/auth.service';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { Helpers } from '@global/helpers/helpers';
 import { upload } from '@global/helpers/cloudinary-upload';
+import { IUserDocument } from '@user/interfaces/user.interface';
+import { UserCache } from '@services/redis/user.cache';
+import { config } from '@root/config';
+
+const userCache: UserCache = new UserCache();
 
 export class SignUp {
   @joiValidation(signupSchema)
@@ -38,6 +43,11 @@ export class SignUp {
       throw new BadRequestError('File upload error');
     }
 
+    /* add user to Redis cache */
+    const userDataToCache: IUserDocument = SignUp.prototype.userData(authData, userObjectId);
+    userDataToCache.profilePicture = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
+    await userCache.saveUserToCache(`${userObjectId}`, uId, userDataToCache);
+
     res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', authData });
   }
 
@@ -52,5 +62,42 @@ export class SignUp {
       avatarColor,
       createdAt: new Date(),
     } as IAuthDocument;
+  }
+
+  private userData(data: IAuthDocument, userObjectId: ObjectId): IUserDocument {
+    const { _id, username, email, uId, password, avatarColor } = data;
+    return {
+      _id: userObjectId,
+      authId: _id,
+      uId,
+      username: Helpers.firstLetterUppercase(username),
+      email,
+      password,
+      avatarColor,
+      profilePicture: '',
+      blocked: [],
+      blockedBy: [],
+      work: '',
+      location: '',
+      school: '',
+      quote: '',
+      bgImageId: '',
+      bgImageVersion: '',
+      followersCount: 0,
+      followingCount: 0,
+      postsCount: 0,
+      notifications: {
+        messages: true,
+        reactions: true,
+        comments: true,
+        follows: true,
+      },
+      social: {
+        facebook: '',
+        instagram: '',
+        twitter: '',
+        youtube: '',
+      },
+    } as unknown as IUserDocument;
   }
 }
