@@ -2,29 +2,29 @@
 # yarn lockfile v1
 
 
-"@bull-board/api@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-5.1.2.tgz#9d86cbb99e56baf6d23ea34f6b00aeee62de62ed"
-  integrity sha512-NLV88eDnOMd0XuYUNBcaYL6UdxbGYY91kP+P5Jled6CGcYmXLXv/mzAopxmgctqmP07cjC2EXN/4Oc7dyalDqA==
+"@bull-board/api@5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-5.2.0.tgz#8ca12cecc55f2f93225cc4a06fbff501c0429812"
+  integrity sha512-1HGF2EF/4zI3+Cj414nQzwFprLXOJTlVdqXUf5UEBS4HtYafWv93mGIwkrD8S4Bpz4VSvM87adF6tQPJ7Ewt+w==
   dependencies:
     redis-info "^3.0.8"
 
-"@bull-board/express@^5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@bull-board/express/-/express-5.1.2.tgz#cc79f516425da6438049a723ca13f1bda787e723"
-  integrity sha512-IWOUGcXGdq+aK9cN6yBnk3NOPjpGYpX+7BYN9OOVQt7j+mQdtBJZHPNb/vqsBMlx/B6D7Wt8u/N3gIO8w5gIgg==
+"@bull-board/express@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@bull-board/express/-/express-5.2.0.tgz#876de92aac12a319fb3a7efe6dd99b29c9894284"
+  integrity sha512-PsrYX4TRtCnpXwywldVKCTBSn8fRBmKFe9J7GTDZ0f03JgWK/QYgOYfbDCHrTBU4pF9YcNECOMXSUenTEBc4DQ==
   dependencies:
-    "@bull-board/api" "5.1.2"
-    "@bull-board/ui" "5.1.2"
+    "@bull-board/api" "5.2.0"
+    "@bull-board/ui" "5.2.0"
     ejs "3.1.7"
     express "4.17.3"
 
-"@bull-board/ui@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-5.1.2.tgz#71e21919ea8eb8f5d251c1f84a7e40ebb3897ebd"
-  integrity sha512-DXXbKA4NLo5D19Vssrg4pPFaFjXVzjFN0ht4GVuoJQejy7t/RVrWzZCjdyVuSiOFTlG3SyB39zW5a95Q5EXUTg==
+"@bull-board/ui@5.2.0", "@bull-board/ui@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-5.2.0.tgz#79776838429fccfa5204d857efd71d705a694ccc"
+  integrity sha512-f2sgs7AjOVch7tFhbmlVCkhZjJWboxwNxWEfAsIUd1WidUC+Ef5J02tpQvu7apzRtu5zcn8IiJtI5HFO6oKaCA==
   dependencies:
-    "@bull-board/api" "5.1.2"
+    "@bull-board/api" "5.2.0"
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -272,6 +272,13 @@
   dependencies:
     "@types/connect" "*"
     "@types/node" "*"
+
+"@types/bull@^4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@types/bull/-/bull-4.10.0.tgz#176d7677af2a3df034df4b71daefd63c50a3e438"
+  integrity sha512-RkYW8K2H3J76HT6twmHYbzJ0GtLDDotpLP9ah9gtiA7zfF6peBH1l5fEiK0oeIZ3/642M7Jcb9sPmor8Vf4w6g==
+  dependencies:
+    bull "*"
 
 "@types/bunyan@^1.8.8":
   version "1.8.8"
@@ -689,7 +696,7 @@ buffer-equal-constant-time@1.0.1:
   resolved "https://registry.yarnpkg.com/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
   integrity sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==
 
-bull@^4.10.4:
+bull@*, bull@^4.10.4:
   version "4.10.4"
   resolved "https://registry.yarnpkg.com/bull/-/bull-4.10.4.tgz#db39ee0c3bfbe3b76f1f35db800501de5bba4f84"
   integrity sha512-o9m/7HjS/Or3vqRd59evBlWCXd9Lp+ALppKseoSKHaykK46SmRjAilX98PgmOz1yeVaurt8D5UtvEt4bUjM3eA==
