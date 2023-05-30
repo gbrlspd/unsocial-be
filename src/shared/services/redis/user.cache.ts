@@ -3,6 +3,7 @@ import { config } from '@root/config';
 import { BaseCache } from '@services/redis/base.cache';
 import { IUserDocument } from '@user/interfaces/user.interface';
 import { ServerError } from '@global/helpers/error-handler';
+import { Helpers } from '@global/helpers/helpers';
 
 const log: Logger = config.createLogger('redisConnection');
 
@@ -88,6 +89,29 @@ export class UserCache extends BaseCache {
       }
       await this.client.ZADD('user', { score: parseInt(userUid, 10), value: `${key}` });
       await this.client.HSET(`users:${key}`, dataToSave);
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Internal error');
+    }
+  }
+
+  public async getUserFromCache(userId: string): Promise<IUserDocument | null> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+
+      const res: IUserDocument = (await this.client.HGETALL(`users:${userId}`)) as unknown as IUserDocument;
+      res.createdAt = new Date(Helpers.parseJson(`${res.createdAt}`));
+      res.postsCount = Helpers.parseJson(`${res.postsCount}`);
+      res.blocked = Helpers.parseJson(`${res.blocked}`);
+      res.blockedBy = Helpers.parseJson(`${res.blockedBy}`);
+      res.notifications = Helpers.parseJson(`${res.notifications}`);
+      res.social = Helpers.parseJson(`${res.social}`);
+      res.followersCount = Helpers.parseJson(`${res.followersCount}`);
+      res.followingCount = Helpers.parseJson(`${res.followingCount}`);
+
+      return res;
     } catch (error) {
       log.error(error);
       throw new ServerError('Internal error');

@@ -2,7 +2,6 @@ import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
 import { UploadApiResponse } from 'cloudinary';
-import { omit } from 'lodash';
 import JWT from 'jsonwebtoken';
 import { joiValidation } from '@global/decorators/joi-validation.decorator';
 import { signupSchema } from '@auth/schemes/signup';
@@ -24,8 +23,8 @@ export class SignUp {
   public async create(req: Request, res: Response): Promise<void> {
     const { username, email, password, avatarColor, avatarImage } = req.body;
 
-    const checkIfUserExists: IAuthDocument = await authService.getUserByUsernameOrEmail(username, email);
-    if (checkIfUserExists) {
+    const existingUser: IAuthDocument = await authService.getUserByUsernameOrEmail(username, email);
+    if (existingUser) {
       throw new BadRequestError('Invalid credentials');
     }
 
@@ -53,14 +52,13 @@ export class SignUp {
     await userCache.saveUserToCache(`${userObjectId}`, uId, userDataToCache);
 
     /* Add to database */
-    omit(userDataToCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
-    authQueue.addAuthUserJob('addAuthUserToDatabase', { value: userDataToCache });
+    authQueue.addAuthUserJob('addAuthUserToDatabase', { value: authData });
     userQueue.addUserJob('addUserToDatabase', { value: userDataToCache });
 
     const userJwt: string = SignUp.prototype.signToken(authData, userObjectId);
 
     req.session = { jwt: userJwt };
-    res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', userDataToCache, token: userJwt });
+    res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', user: userDataToCache, token: userJwt });
   }
 
   private signToken(data: IAuthDocument, userObjectId: ObjectId): string {
