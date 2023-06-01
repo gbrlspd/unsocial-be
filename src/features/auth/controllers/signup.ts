@@ -51,7 +51,7 @@ export class SignUp {
     userDataToCache.profilePicture = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
     await userCache.saveUserToCache(`${userObjectId}`, uId, userDataToCache);
 
-    /* Add to database */
+    /* add to database */
     authQueue.addAuthUserJob('addAuthUserToDatabase', { value: authData });
     userQueue.addUserJob('addUserToDatabase', { value: userDataToCache });
 
