@@ -44,7 +44,7 @@ export class Password {
     const { token } = req.params;
 
     if (password !== confirmPassword) {
-      throw new BadRequestError('Password do not match');
+      throw new BadRequestError('Passwords do not match');
     }
 
     const existingUser: IAuthDocument = await authService.getAuthUserByPasswordToken(token);
