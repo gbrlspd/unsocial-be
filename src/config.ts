@@ -5,6 +5,7 @@ import cloudinary from 'cloudinary';
 dotenv.config({});
 
 class Config {
+  public NODE_ENV: string | undefined;
   public DATABASE_URI: string | undefined;
   public REDIS_URI: string | undefined;
   public CLIENT_URL: string | undefined;
@@ -14,9 +15,13 @@ class Config {
   public CLOUD_NAME: string | undefined;
   public CLOUD_API_KEY: string | undefined;
   public CLOUD_API_SECRET: string | undefined;
-  public NODE_ENV: string | undefined;
+  public SENDER_EMAIL: string | undefined;
+  public SENDER_EMAIL_PASSWORD: string | undefined;
+  public SENDGRID_API_KEY: string | undefined;
+  public SENDGRID_SENDER: string | undefined;
 
   constructor() {
+    this.NODE_ENV = process.env.NODE_ENV;
     this.DATABASE_URI = process.env.DATABASE_URI;
     this.REDIS_URI = process.env.REDIS_URI;
     this.CLIENT_URL = process.env.CLIENT_URL;
@@ -26,7 +31,10 @@ class Config {
     this.CLOUD_NAME = process.env.CLOUD_NAME;
     this.CLOUD_API_KEY = process.env.CLOUD_API_KEY;
     this.CLOUD_API_SECRET = process.env.CLOUD_API_SECRET;
-    this.NODE_ENV = process.env.NODE_ENV;
+    this.SENDER_EMAIL = process.env.SENDER_EMAIL;
+    this.SENDER_EMAIL_PASSWORD = process.env.SENDER_EMAIL_PASSWORD;
+    this.SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+    this.SENDGRID_SENDER = process.env.SENDGRID_SENDER;
   }
 
   public createLogger(name: string): bunyan {
