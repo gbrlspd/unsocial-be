@@ -27,6 +27,7 @@
       "@workers/*": ["src/shared/workers/*"],
       "@auth/*": ["src/features/auth/*"],
       "@user/*": ["src/features/user/*"],
+      "@mocks/*": ["src/mocks/*"],
       "@root/*": ["src/*"]
     }
   }
