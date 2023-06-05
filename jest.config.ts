@@ -28,6 +28,7 @@ const config: Config.InitialOptions = {
     '@workers/(.*)': ['<rootDir>/src/shared/workers/$1'],
     '@auth/(.*)': ['<rootDir>/src/features/auth/$1'],
     '@user/(.*)': ['<rootDir>/src/features/user/$1'],
+    '@post/(.*)': ['<rootDir>/src/features/post/$1'],
     '@mocks/(.*)': ['<rootDir>/src/mocks/$1'],
     '@root/(.*)': ['<rootDir>/src/$1'],
   },
