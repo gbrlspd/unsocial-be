@@ -1,0 +1,33 @@
+@baseUrl = http://127.0.0.1:5000
+@urlPath = api/v1
+
+###
+POST {{baseUrl}}/{{urlPath}}/post
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "post": "Test post",
+  "bgColor": "#4aa1f3",
+  "privacy": "Public",
+  "gifUrl": "",
+  "profilePicture": "https://res.cloudinary.com/dr611hsid/image/upload/v1685447661/6475e3eda4c8e4e9fea3b114",
+  "feelings": "happy"
+}
+
+###
+POST {{baseUrl}}/{{urlPath}}/post/image/post
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "post": "Test post with image",
+  "bgColor": "#4aa1f3",
+  "privacy": "Public",
+  "gifUrl": "",
+  "profilePicture": "https://res.cloudinary.com/dr611hsid/image/upload/v1685447661/6475e3eda4c8e4e9fea3b114",
+  "feelings": "",
+  "image": "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=="
+}

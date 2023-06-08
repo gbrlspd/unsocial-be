@@ -41,6 +41,7 @@ export class SignUp {
       avatarColor,
     });
 
+    /* upload avatar image to Cloudinary */
     const result: UploadApiResponse = (await upload(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
     if (!result?.public_id) {
       throw new BadRequestError('File upload error');

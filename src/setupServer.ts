@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { Application, json, urlencoded, Request, Response, NextFunction } from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -16,6 +15,7 @@ import 'express-async-errors';
 import applicationRoutes from '@root/routes';
 import { config } from '@root/config';
 import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
+import { SocketPostHandler } from '@socket/post';
 
 const SERVER_PORT = 5000;
 const log: Logger = config.createLogger('setupServer');
@@ -100,7 +100,10 @@ export class ApplicationServer {
     return io;
   }
 
-  private socketConnections(io: Server): void {}
+  private socketConnections(io: Server): void {
+    const socketPostHandler: SocketPostHandler = new SocketPostHandler(io);
+    socketPostHandler.listen();
+  }
 
   private startHttpServer(httpServer: http.Server): void {
     log.info(`Server process: ${process.pid}`);

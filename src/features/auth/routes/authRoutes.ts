@@ -6,6 +6,7 @@ import { SignUp } from '@auth/controllers/signup';
 
 class AuthRoutes {
   private router: Router;
+
   constructor() {
     this.router = express.Router();
   }
