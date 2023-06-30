@@ -55,9 +55,7 @@ export class CreatePost {
 
     postQueue.addPostJob('addPostToDatabase', { key: req.currentUser!.userId, value: createdPost });
 
-    res.status(HTTP_STATUS.CREATED).json({
-      message: 'Post created successfully',
-    });
+    res.status(HTTP_STATUS.CREATED).json({ message: 'Post created successfully' });
   }
 
   @joiValidation(postWithImageSchema)
@@ -107,8 +105,6 @@ export class CreatePost {
 
     postQueue.addPostJob('addPostToDatabase', { key: req.currentUser!.userId, value: createdPost });
 
-    res.status(HTTP_STATUS.CREATED).json({
-      message: 'Post with image created successfully',
-    });
+    res.status(HTTP_STATUS.CREATED).json({ message: 'Post with image created successfully' });
   }
 }

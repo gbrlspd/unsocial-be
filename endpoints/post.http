@@ -31,3 +31,54 @@ withCredentials: true
   "feelings": "",
   "image": "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=="
 }
+
+###
+GET {{baseUrl}}/{{urlPath}}/post/all/1
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+GET {{baseUrl}}/{{urlPath}}/post/images/1
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+DELETE {{baseUrl}}/{{urlPath}}/post/6487820b1592cc1029dd59ea
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+PUT {{baseUrl}}/{{urlPath}}/post/6487820f1592cc1029dd59ee
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "post": "Test post update 2",
+  "bgColor": "#eeeeee",
+  "privacy": "Private",
+  "gifUrl": "",
+  "profilePicture": "https://res.cloudinary.com/dr611hsid/image/upload/v1685447661/6475e3eda4c8e4e9fea3b114",
+  "feelings": "",
+  "imgId": "",
+  "imgVersion": ""
+}
+
+###
+PUT {{baseUrl}}/{{urlPath}}/post/image/6487820f1592cc1029dd59ee
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "post": "Test post update with image",
+  "bgColor": "#eeeeee",
+  "privacy": "Private",
+  "gifUrl": "",
+  "profilePicture": "https://res.cloudinary.com/dr611hsid/image/upload/v1685447661/6475e3eda4c8e4e9fea3b114",
+  "feelings": "",
+  "image": "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=="
+}
